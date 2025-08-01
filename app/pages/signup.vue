@@ -41,16 +41,26 @@
 
       <!-- Formulário de cadastro -->
       <form @submit.prevent="criarConta" class="space-y-4">
-        <div>
-          <label class="text-sm block mb-1">{{ type == "cliente" ? 'Nome Completo' : 'CNPJ'}}</label>
+        <div v-if="type == 'cliente'">
+          <label class="text-sm block mb-1">Nome Completo</label>
           <input
             v-model="name"
             type="text"
-            :placeholder="type === 'cliente' ? 'Digite seu nome completo' : 'Digite o CNPJ'"
+            placeholder="Digite seu nome completo"
             class="w-full px-4 py-3 rounded-md bg-black border border-gray-700 focus:ring-2 focus:ring-yellow-500 text-sm"
             required
           />
         </div>
+          <div v-if="type == 'barbearia'">
+          <label class="text-sm block mb-1">Cnpj</label>
+          <input
+            v-model="cnpj"
+            type="text"
+            placeholder="Digite o CNPJ"
+            class="w-full px-4 py-3 rounded-md bg-black border border-gray-700 focus:ring-2 focus:ring-yellow-500 text-sm"
+            required
+          />
+            </div>
           <div  v-if="type == 'barbearia'">
           <label class="text-sm block mb-1" >Nome da Barbearia</label>
           <input
@@ -61,6 +71,18 @@
             required
           />
         </div>
+
+        <div  v-if="type == 'barbearia'">
+          <label class="text-sm block mb-1" >Endereço Completo</label>
+          <input
+            v-model="address"
+            type="text"
+            placeholder="Digite o endereço completo da barbearia"
+            class="w-full px-4 py-3 rounded-md bg-black border border-gray-700 focus:ring-2 focus:ring-yellow-500 text-sm"
+            required
+          />
+        </div>
+        
         <div>
           <label class="text-sm block mb-1">Email</label>
           <input
@@ -126,6 +148,8 @@ import { ref } from 'vue'
 const name = ref('')
 const email = ref('')
 const password = ref('')
+const cnpj = ref('')
+const address = ref('')
 const barberName = ref('')
 const confirmPassword = ref('')
 const cellphone = ref('')
@@ -146,11 +170,7 @@ const criarConta = async () => {
     return
   }
 
-    if (name.value.trim() === '' || email.value.trim() === '' || password.value.trim() === '') {
-        alert('Por favor, preencha todos os campos obrigatórios.')
-        loading.value = false
-        return
-    }
+    
 
    if (type.value === "cliente") {
   try {
@@ -182,11 +202,44 @@ const criarConta = async () => {
   } finally {
     loading.value = false
   }
-}
+} else if (type.value === "barbearia") {
+  try {
+    const response = await fetch("http://localhost:8080/api/v1/barber-shops", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: barberName.value,
+        address: address.value,
+        cnpj: cnpj.value,
+        email: email.value,
+        password: password.value,
+        cellphone: cellphone.value
+      })
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      alert("Erro ao criar conta: " + (errorData.message || response.statusText))
+      return
+    }
+
+    const data = await response.json()
+    console.log("Conta de barbearia criada com sucesso:", data)
+    // Você pode redirecionar o usuário ou mostrar mensagem de sucesso aqui
+  } catch (error) {
+    console.error("Erro na requisição:", error)
+    alert("Erro ao conectar com o servidor.")
+  } finally {
+    loading.value = false
+  }
 
 
 
 
   
 }
+}
 </script>
+
