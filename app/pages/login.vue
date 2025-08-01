@@ -87,7 +87,8 @@
 
 <script setup>
 import { ref } from 'vue'
-const loginType = ref('cliente')
+const route = useRoute()
+const loginType = ref(route.query.type || 'client')
 const email = ref('')
 const password = ref('')
 const loading = ref(false)

@@ -25,6 +25,7 @@
 defineProps({
   icon: String,
   title: String,
+  loginType: String,
   description: String,
   to: String,
 })

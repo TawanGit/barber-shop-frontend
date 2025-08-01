@@ -18,9 +18,10 @@ import AccessCard from '~/components/AccessCard.vue';
             />
             <AccessCard
                 icon="ph:scissors"
+                loginType="barbearia"
                 title="Sou uma barbearia"
                 description="Gerencie sua agenda, registre barbeiros, visualize reservas, acompanhe a receita e expanda seu negócio com nossas ferramentas profissionais."
-                to="/manage"
+                :to="`/login?type=barbershop`"
             />
            </div>
         </AccessChoice>
