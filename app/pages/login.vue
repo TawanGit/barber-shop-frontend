@@ -98,11 +98,30 @@ function capitalize(str) {
 
 const handleLogin = async () => {
   loading.value = true
-  await new Promise((r) => setTimeout(r, 1500))
-
+  
   // replace with actual API logic
     
-    fetch("")
+    try {
+     const token = await fetch("http://localhost:8080/api/v1/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email.value,
+          password: password.value,
+        })
+      })
+      
+      const data = await token.json()
+      console.log(data)
+
+    } catch (error) {
+      console.error('Login failed:', error)
+      alert('Erro ao fazer login. Verifique suas credenciais.')
+    } finally {
+      loading.value = false
+    }
 
 
   loading.value = false
