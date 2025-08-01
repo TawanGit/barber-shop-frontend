@@ -14,7 +14,7 @@ import AccessCard from '~/components/AccessCard.vue';
                 icon="bx:user-circle"
                 title="Sou um cliente"
                 description="Agende horários, navegue por barbearias na sua área, gerencie suas reservas e descubra o barbeiro perfeito para o seu estilo."
-                to="/book"
+                to="/login"
             />
             <AccessCard
                 icon="ph:scissors"
