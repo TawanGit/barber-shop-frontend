@@ -115,7 +115,9 @@ const handleLogin = async () => {
       })
       
       const data = await token.json()
-      console.log(data)
+      console.log(data.token)
+      localStorage.setItem('token', data.token)
+      navigateTo('/dashboard')
 
     } catch (error) {
       console.error('Login failed:', error)
